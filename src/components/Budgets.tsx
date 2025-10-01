@@ -21,6 +21,7 @@ export function Budgets() {
       setLoading(true);
       setError(null);
       const response = await api.getBudgets();
+      console.log("response budgets", response);
       setBudgets(response.member);
     } catch (err) {
       console.error("Error fetching budgets:", err);
@@ -33,6 +34,7 @@ export function Budgets() {
   };
 
   useEffect(() => {
+    console.log("fetching budgets");
     fetchBudgets();
   }, []); // fetchBudgets ya está definida dentro del componente
 

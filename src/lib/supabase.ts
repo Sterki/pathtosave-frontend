@@ -5,7 +5,11 @@ const supabaseAnonKey = (import.meta as any).env?.VITE_SUPABASE_ANON_KEY || 'eyJ
 
 export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
   auth: {
-    redirectTo: `${window.location.origin}`,
-    flowType: 'pkce'
+    flowType: 'pkce',
+    persistSession: true,
+    autoRefreshToken: true,
+    detectSessionInUrl: false, // Cambiar a false para evitar problemas
+    storage: window.localStorage,
+    // Usar el storageKey por defecto de Supabase
   }
 })

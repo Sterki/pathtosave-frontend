@@ -45,6 +45,7 @@ export function BudgetForm({
     const fetchCategories = async () => {
       try {
         const response = await api.getCategories();
+        console.log("response", response);
         setCategories(response.member);
       } catch (error) {
         console.error("Error fetching categories:", error);
