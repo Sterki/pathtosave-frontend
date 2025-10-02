@@ -46,14 +46,19 @@ export function Budgets() {
   ) => {
     try {
       if (editingBudget) {
-        await api.updateBudget(editingBudget.id, budgetData);
+        const result = await api.updateBudget(editingBudget.id, budgetData);
+
+        // Actualizar el presupuesto en el estado
+        setBudgets(
+          budgets.map((budget) => (budget.id === result.id ? result : budget))
+        );
         setEditingBudget(null);
       } else {
-        await api.createBudget(budgetData);
+        const newBudget = await api.createBudget(budgetData);
+        // Agregar el nuevo presupuesto al estado
+        setBudgets([...budgets, newBudget]);
       }
 
-      // Recargar la lista de presupuestos
-      await fetchBudgets();
       setShowForm(false);
     } catch (err) {
       console.error("Error saving budget:", err);
@@ -71,7 +76,7 @@ export function Budgets() {
   const handleDelete = async (id: string) => {
     try {
       await api.deleteBudget(id);
-      await fetchBudgets(); // Recargar la lista
+      setBudgets(budgets.filter((budget) => budget.id !== id));
     } catch (err) {
       console.error("Error deleting budget:", err);
       setError(
